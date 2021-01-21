@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 
@@ -11,10 +11,17 @@ import InterviewerList from "../src/components/InterviewerList.js";
 import Header from "../src/components/appointment/Header.js";
 import Empty from "../src/components/appointment/Empty.js";
 import Show from "../src/components/appointment/Show.js";
+import Confirm from "../src/components/appointment/Confirm.js";
+import Status from "../src/components/appointment/Status.js";
+import Error from "../src/components/appointment/Error.js";
+import Appointment from "../src/components/appointment/index.js";
+
+
 
 
 //CSS Files
 import "index.scss";
+import Form from "components/appointment/Form.js";
 
 
 
@@ -147,7 +154,7 @@ storiesOf("InterviewerList", module)
     />
   ));
 
-//                          index.js "Appointment"
+//                          index.js aka"Appointment"
 
 storiesOf("Appointment", module)
   .addParameters({
@@ -156,10 +163,128 @@ storiesOf("Appointment", module)
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12pm" />)
   .add("Header", () => <Header time={"12pm"} />)
-  .add("Empty", () => <Empty onAdd={action("onAdd")} />)
-  .add("Show", () => <Show student={"Lydia Miller-Jones"} />)
-  .add("Show", () => <Show interviewer={interviewer} />)
-  .add("Show", () => <Show onEdit={ action("onEdit")} />)
-  .add("Show", () => <Show onDelete={ action("onDelete")} />);
+  .add("Empty", () => <Empty onAdd={() => action("onAdd")()} />)
 
+  .add("Show", () => (
+    <Show
+      student="Lydia Miller-Jones"
+      interviewer={interviewers[0]}
+      onEdit={() =>action("onEdit")()}
+      onDelete={() =>action("onDelete")()}
+    />
+  ))
+  .add("Confirm", () => (
+    <Confirm
+      message="Delete the (dis)appointment?"
+      onConfirm={() =>action("onConfirm")()}
+      onCancel={() =>action("onCanacel")()}
+    />
+  ))
+  .add("Status", ()=> <Status message="Deleting" />)
+  
+  .add("Error", ()=> <Error 
+    message="Could not Delete appointment" 
+    onClose={()=>action("onClose")()}
+    />
+  )
+  .add("Edit", ()=> 
+    <Form 
+      name="Christopher"
+      interviewers={interviewers}
+      interviewer={4}
+      onSave={(name, interviewer)=>action("onSave")(name, interviewer)}
+      onCancel={()=>action("onCancel")()}
+    />
+  )
 
+  .add("Create", ()=>
+    <Form
+      interviewers={interviewers}
+      onSave={(name, interviewer)=>action("onSave")(name, interviewer)}
+      onCancel={()=>action("onCancel")()}
+    />
+  )
+  .add("Appointment Empty", () => (
+    <Fragment>
+      <Appointment id={1} time="12pm" />
+      <Appointment id="last" time="1pm" />
+    </Fragment>
+  ))
+
+  .add("Appointment Booked", () => (
+    <Fragment>
+      <Appointment
+        id={1}
+        time="12pm"
+        interview={{ student: "Lydia Miller-Jones", interviewer }}
+      />
+      <Appointment id="last" time="1pm" />
+    </Fragment>
+  ))
+  
+  const appointments = [
+    {
+      id: 1,
+      time: "12pm",
+    },
+    {
+      id: 2,
+      time: "1pm",
+      interview: {
+        student: "Lydia Miller-Jones",
+        interviewer: {
+          id: 1,
+          name: "Sylvia Palmer",
+          avatar: "https://i.imgur.com/LpaY82x.png",
+        }
+      }
+    },
+    {
+      id: 2,
+      time: "2pm",
+    },
+    {
+      id: 3,
+      time: "3pm",
+      interview: {
+        student: "Patricia Flowers",
+        interviewer: {
+          id: 4,
+          name: "Cohana Roy",
+          avatar: "https://i.imgur.com/FK8V841.jpg",
+        }
+      }
+    },
+    {
+      id: 3,
+      time: "3pm",
+    },
+    {
+      id: 4,
+      time: "4pm",
+      interview: {
+        student: "Leroy Jenkins",
+        interviewer: {
+          id: 3,
+          name: "Mildred Nazir",
+          avatar: "https://i.imgur.com/T2WwVfS.png",
+        }
+      }
+    },
+    {
+      id: 4,
+      time: "5pm",
+    },
+    {
+      id: 5,
+      time: "6pm",
+      interview: {
+        student: "Sally Withers",
+        interviewer: {
+          id: 2,
+          name: "Tori Malcom",
+          avatar: "https://i.imgur.com/Nmx0Qxo.png",
+        }
+      }
+    }
+  ];
