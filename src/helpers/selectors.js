@@ -33,7 +33,6 @@ export const getInterview = (state, interview) => {
         if(dayofWeek.name === day){
             dayofWeek.appointments.forEach((interviewID)=>{
                 interviewersByDay.push(state.interviewers[interviewID]);
-              
             })
         }
     })
