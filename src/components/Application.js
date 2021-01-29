@@ -2,28 +2,27 @@ import React from "react";
 import "components/Application.scss";
 import DayList from "./DayList.js";
 import Appointment from "components/appointment";
-import {getAppointmentsForDay, getInterview, getInterviewersForDay} from "../helpers/selectors"
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "../helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
-
-
 export default function Application(props) {
-
   const {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+    cancelInterview,
   } = useApplicationData();
-
- 
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  const schedule = dailyAppointments.map((appointment) => { 
-  const interview = getInterview(state, appointment.interview);
-  const interviewers = getInterviewersForDay(state, state.day)
-  
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+    const interviewers = getInterviewersForDay(state, state.day);
+
     return (
       <Appointment
         key={appointment.id}
@@ -40,29 +39,22 @@ export default function Application(props) {
   return (
     <main className="layout">
       <section className="sidebar">
-
-      <img
-        className="sidebar--centered"
-        src="images/logo.png"
-        alt="Interview Scheduler"
-      />
-      <hr className="sidebar__separator sidebar--centered" />
-      <nav className="sidebar__menu">
-      <DayList 
-      days={state.days} 
-      setDay={setDay} 
-      day={state.day}/>
-      </nav>
-      <img
-        className="sidebar__lhl sidebar--centered"
-        src="images/lhl.png"
-        alt="Lighthouse Labs"
-      />
+        <img
+          className="sidebar--centered"
+          src="images/logo.png"
+          alt="Interview Scheduler"
+        />
+        <hr className="sidebar__separator sidebar--centered" />
+        <nav className="sidebar__menu">
+          <DayList days={state.days} setDay={setDay} day={state.day} />
+        </nav>
+        <img
+          className="sidebar__lhl sidebar--centered"
+          src="images/lhl.png"
+          alt="Lighthouse Labs"
+        />
       </section>
-      <section className="schedule">
-      {schedule}
-      </section>
+      <section className="schedule">{schedule}</section>
     </main>
   );
- 
 }

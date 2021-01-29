@@ -39,64 +39,54 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
-    return axios.put(`/api/appointments/${id}`, appointment )
-    .then(()=>{
-      setState(prev=>({
-        ...prev,
-        appointments
-      }))
-    })
-    .then(()=>{
-      return axios.get('/api/days')
-      .then((data)=>{
-        return setState((prev) => ({
+    return axios
+      .put(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        setState((prev) => ({
           ...prev,
-          days: data.data
-        }))
+          appointments,
+        }));
       })
-    })
-  }
-    
+      .then(() => {
+        return axios.get("/api/days").then((data) => {
+          return setState((prev) => ({
+            ...prev,
+            days: data.data,
+          }));
+        });
+      });
+  };
 
-
-
-  const cancelInterview = (id) =>{
+  const cancelInterview = (id) => {
     const appointment = {
       ...state.appointments[id],
       interview: null,
     };
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
-    return axios.delete(`api/appointments/${id}`)
-    .then(()=>{
-      return setState(prev=>{
-        return {...prev,
-        appointments
-      }
-        
+    return axios
+      .delete(`api/appointments/${id}`)
+      .then(() => {
+        return setState((prev) => {
+          return { ...prev, appointments };
+        });
       })
-    })
-    .then(()=>{
-      return axios.get('/api/days')
-      .then((data)=>{
-        return setState((prev) => ({
-          ...prev,
-          days: data.data
-        }))
-      })
-    })
-  }
-
-
-  return {
-    state, 
-    setDay,
-    bookInterview,
-    cancelInterview
+      .then(() => {
+        return axios.get("/api/days").then((data) => {
+          return setState((prev) => ({
+            ...prev,
+            days: data.data,
+          }));
+        });
+      });
   };
 
+  return {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview,
+  };
 }
-
-

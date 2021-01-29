@@ -18,8 +18,8 @@ export default function Appointment(props) {
   const CONFIRM = "CONFIRM";
   const EDIT = "EDITING";
   const ERROR_SAVE = "Sorry, something went wrong when SAVING the interview!";
-  const ERROR_DELETE = "Sorry, something went wrong when DELETING the interview!";
-  
+  const ERROR_DELETE =
+    "Sorry, something went wrong when DELETING the interview!";
 
   const save = (name, interviewer) => {
     const interview = {
